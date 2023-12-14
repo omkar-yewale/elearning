@@ -860,6 +860,7 @@ $settings['migrate_node_migrate_type_classic'] = FALSE;
 # if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
 #   include $app_root . '/' . $site_path . '/settings.local.php';
 # }
+
 $databases['default']['default'] = array (
   'database' => 'elearning',
   'username' => 'root',
@@ -873,15 +874,6 @@ $databases['default']['default'] = array (
   'autoload' => 'core/modules/mysql/src/Driver/Database/mysql/',
 );
 
-$settings['config_sync_directory'] = '../config/sync';$databases['default']['default'] = array (
-  'database' => 'elearning',
-  'username' => 'root',
-  'password' => '',
-  'prefix' => '',
-  'host' => 'localhost',
-  'port' => '3306',
-  'isolation_level' => 'READ COMMITTED',
-  'namespace' => 'Drupal\\mysql\\Driver\\Database\\mysql',
-  'driver' => 'mysql',
-  'autoload' => 'core/modules/mysql/src/Driver/Database/mysql/',
-);
+$settings['config_sync_directory'] = '../config/sync';
+$settings['file_public_path'] = 'sites/default/files';
+$settings['file_private_path'] = 'sites/default/private';

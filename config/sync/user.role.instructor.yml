@@ -1,9 +1,37 @@
 uuid: 742f7189-53ad-49c7-96a7-5bd8a09eea22
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - node.type.course
+    - node.type.lessons
+  module:
+    - node
+    - paragraphs_type_permissions
+    - system
 id: instructor
 label: Instructor
 weight: 5
 is_admin: null
-permissions: {  }
+permissions:
+  - 'access content'
+  - 'create course content'
+  - 'create lessons content'
+  - 'create paragraph content lesson_paragraph'
+  - 'delete any course content'
+  - 'delete any lessons content'
+  - 'delete course revisions'
+  - 'delete lessons revisions'
+  - 'delete own course content'
+  - 'delete own lessons content'
+  - 'delete paragraph content lesson_paragraph'
+  - 'edit any course content'
+  - 'edit any lessons content'
+  - 'edit own course content'
+  - 'edit own lessons content'
+  - 'revert course revisions'
+  - 'revert lessons revisions'
+  - 'update paragraph content lesson_paragraph'
+  - 'view course revisions'
+  - 'view lessons revisions'
+  - 'view paragraph content lesson_paragraph'

@@ -1,0 +1,18 @@
+uuid: 7c93b7e9-514b-45f3-9f5a-83b78311af8f
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus:
+      - main
+    parent: 'main:'
+name: Lesson
+type: lessons
+description: 'Create lessons for the course.'
+help: ''
+new_revision: true
+preview_mode: 1
+display_submitted: true
