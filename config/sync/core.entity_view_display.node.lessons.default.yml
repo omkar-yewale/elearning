@@ -1,0 +1,32 @@
+uuid: 9658f522-acfb-42d7-8546-8c1adae565f6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.lessons.body
+    - field.field.node.lessons.field_lesson_materials
+    - node.type.lessons
+  module:
+    - entity_reference_revisions
+    - user
+id: node.lessons.default
+targetEntityType: node
+bundle: lessons
+mode: default
+content:
+  field_lesson_materials:
+    type: entity_reference_revisions_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  body: true

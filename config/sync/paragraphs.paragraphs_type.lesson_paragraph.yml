@@ -1,0 +1,10 @@
+uuid: 461c5389-0f1b-4a29-8e0b-33dd6f6ef068
+langcode: en
+status: true
+dependencies: {  }
+id: lesson_paragraph
+label: 'Lesson Paragraph'
+icon_uuid: null
+icon_default: null
+description: ''
+behavior_plugins: {  }

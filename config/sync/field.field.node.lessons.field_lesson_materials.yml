@@ -1,0 +1,31 @@
+uuid: 13cdc3ea-5584-480a-9dbc-2ffd6109cf80
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_lesson_materials
+    - node.type.lessons
+    - paragraphs.paragraphs_type.lesson_paragraph
+  module:
+    - entity_reference_revisions
+id: node.lessons.field_lesson_materials
+field_name: field_lesson_materials
+entity_type: node
+bundle: lessons
+label: 'Lesson Materials'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      lesson_paragraph: lesson_paragraph
+    negate: 0
+    target_bundles_drag_drop:
+      lesson_paragraph:
+        weight: 2
+        enabled: true
+field_type: entity_reference_revisions

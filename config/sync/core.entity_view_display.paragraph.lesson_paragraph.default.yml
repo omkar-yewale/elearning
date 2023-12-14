@@ -1,0 +1,32 @@
+uuid: 4687befe-d9bb-4203-9c89-18850996ab8a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.lesson_paragraph.field_description
+    - field.field.paragraph.lesson_paragraph.field_upload_media
+    - paragraphs.paragraphs_type.lesson_paragraph
+  module:
+    - text
+id: paragraph.lesson_paragraph.default
+targetEntityType: paragraph
+bundle: lesson_paragraph
+mode: default
+content:
+  field_description:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_upload_media:
+    type: entity_reference_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden: {  }

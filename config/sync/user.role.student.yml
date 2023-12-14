@@ -1,0 +1,14 @@
+uuid: 48b32b1c-9a17-4934-80a2-b489324837f0
+langcode: en
+status: true
+dependencies:
+  module:
+    - paragraphs_type_permissions
+    - system
+id: student
+label: Student
+weight: 4
+is_admin: null
+permissions:
+  - 'access content'
+  - 'view paragraph content lesson_paragraph'

@@ -1,0 +1,18 @@
+uuid: 25fbe97c-075f-4d8b-8bfd-a2b74ed6b6ad
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus:
+      - main
+    parent: 'main:'
+name: Course
+type: course
+description: 'Add course details.'
+help: ''
+new_revision: true
+preview_mode: 1
+display_submitted: true
