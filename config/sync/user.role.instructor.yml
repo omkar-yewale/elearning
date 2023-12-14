@@ -1,0 +1,9 @@
+uuid: 742f7189-53ad-49c7-96a7-5bd8a09eea22
+langcode: en
+status: true
+dependencies: {  }
+id: instructor
+label: Instructor
+weight: 5
+is_admin: null
+permissions: {  }
