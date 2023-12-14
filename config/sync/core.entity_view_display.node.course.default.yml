@@ -9,7 +9,6 @@ dependencies:
     - field.field.node.course.field_lessons
     - node.type.course
   module:
-    - image
     - text
     - user
 id: node.course.default
@@ -22,18 +21,16 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 101
+    weight: 2
     region: content
   field_cover_image:
-    type: image
-    label: above
+    type: entity_reference_entity_view
+    label: visually_hidden
     settings:
-      image_link: ''
-      image_style: ''
-      image_loading:
-        attribute: lazy
+      view_mode: default
+      link: false
     third_party_settings: {  }
-    weight: 102
+    weight: 1
     region: content
   field_duration:
     type: string
@@ -41,7 +38,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 103
+    weight: 4
     region: content
   field_lessons:
     type: entity_reference_label
@@ -49,11 +46,11 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-    weight: 104
+    weight: 3
     region: content
   links:
     settings: {  }
     third_party_settings: {  }
-    weight: 100
+    weight: 0
     region: content
 hidden: {  }
