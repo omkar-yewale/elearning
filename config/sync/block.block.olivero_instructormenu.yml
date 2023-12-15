@@ -1,30 +1,28 @@
-uuid: c54e333a-6150-4ea8-9956-1519297477ce
+uuid: 16a24570-6921-4920-851b-c9c9a07d0234
 langcode: en
 status: true
 dependencies:
   config:
-    - system.menu.main
+    - system.menu.instructor-menu
   module:
     - system
     - user
   theme:
     - olivero
-_core:
-  default_config_hash: KWAiziL39uEzmOJEql_wbUP2RtqGceL3WM2CfxhMelE
-id: olivero_main_menu
+id: olivero_instructormenu
 theme: olivero
 region: primary_menu
-weight: -7
+weight: -5
 provider: null
-plugin: 'system_menu_block:main'
+plugin: 'system_menu_block:instructor-menu'
 settings:
-  id: 'system_menu_block:main'
-  label: 'Main navigation'
+  id: 'system_menu_block:instructor-menu'
+  label: 'Instructor Menu'
   label_display: '0'
   provider: system
   level: 1
-  depth: 2
-  expand_all_items: true
+  depth: 0
+  expand_all_items: false
 visibility:
   user_role:
     id: user_role
@@ -32,4 +30,4 @@ visibility:
     context_mapping:
       user: '@user.current_user_context:current_user'
     roles:
-      administrator: administrator
+      instructor: instructor

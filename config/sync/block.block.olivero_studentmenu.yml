@@ -1,30 +1,28 @@
-uuid: c54e333a-6150-4ea8-9956-1519297477ce
+uuid: 204c6072-c90b-4865-9deb-f1ade1be2210
 langcode: en
 status: true
 dependencies:
   config:
-    - system.menu.main
+    - system.menu.student-menu
   module:
     - system
     - user
   theme:
     - olivero
-_core:
-  default_config_hash: KWAiziL39uEzmOJEql_wbUP2RtqGceL3WM2CfxhMelE
-id: olivero_main_menu
+id: olivero_studentmenu
 theme: olivero
 region: primary_menu
-weight: -7
+weight: -6
 provider: null
-plugin: 'system_menu_block:main'
+plugin: 'system_menu_block:student-menu'
 settings:
-  id: 'system_menu_block:main'
-  label: 'Main navigation'
+  id: 'system_menu_block:student-menu'
+  label: 'Student Menu'
   label_display: '0'
   provider: system
   level: 1
-  depth: 2
-  expand_all_items: true
+  depth: 0
+  expand_all_items: false
 visibility:
   user_role:
     id: user_role
@@ -32,4 +30,4 @@ visibility:
     context_mapping:
       user: '@user.current_user_context:current_user'
     roles:
-      administrator: administrator
+      student: student

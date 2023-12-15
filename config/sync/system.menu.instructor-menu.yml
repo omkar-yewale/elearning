@@ -1,0 +1,8 @@
+uuid: 27006fdf-d368-41d9-bf6d-e046d1e399fa
+langcode: en
+status: true
+dependencies: {  }
+id: instructor-menu
+label: 'Instructor Menu'
+description: 'Menu for Instructor role.'
+locked: false

@@ -1,0 +1,8 @@
+uuid: 812ab9a5-8ea0-4949-a070-5318d1ccab32
+langcode: en
+status: true
+dependencies: {  }
+id: student-menu
+label: 'Student Menu'
+description: 'Menu for student role.'
+locked: false
