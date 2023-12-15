@@ -1,0 +1,4 @@
+services:
+  custom_elearning.common_service:
+    class: Drupal\custom_elearning\CommonService
+    arguments: ['@entity_type.manager', '@current_user', '@database']

@@ -26,7 +26,6 @@ visibility:
     context_mapping:
       user: '@user.current_user_context:current_user'
     roles:
-      administrator: administrator
       student: student
   'entity_bundle:node':
     id: 'entity_bundle:node'

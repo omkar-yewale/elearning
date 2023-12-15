@@ -1,0 +1,25 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for custom elearning module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
+use Drupal\user\Entity\User;
+
+/**
+ * Implements hook_help().
+ */
+function custom_elearning_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.custom_elearning':
+
+      return '<p>' . t('A custom module E-learning drupal project.') . '</p>';
+
+    default:
+  }
+}
+

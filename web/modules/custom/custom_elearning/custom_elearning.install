@@ -1,0 +1,144 @@
+<?php
+
+/**
+ * @file
+ */
+
+use Drupal\Core\Database\Database;
+
+/**
+ * @file
+ * Install, update and uninstall functions for the custom elearning module.
+ */
+
+/**
+ *
+ */
+function custom_elearning_install() {
+  $course_enrollment_table = [
+    'description' => 'Course Enrollment Status Table.',
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => 'Primary Key',
+      ],
+      'user_id' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => '0',
+        'unsigned' => TRUE,
+        'description' => 'User ID',
+      ],
+      'course_id' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => '0',
+        'unsigned' => TRUE,
+        'description' => 'Course ID',
+      ],
+      'course_status' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => '0',
+        'unsigned' => TRUE,
+        'description' => 'Course Status: 0: Enrolled, 1: on-going, 2: Completed',
+      ],
+      'created_date' => [
+        'type' => 'varchar',
+        'mysql_type' => 'datetime',
+        'not null' => TRUE,
+        'description' => 'Created Date Time',
+      ],
+      'updated_date' => [
+        'type' => 'varchar',
+        'mysql_type' => 'datetime',
+        'not null' => TRUE,
+        'default' => '1970-01-01 00:00:00',
+        'description' => 'Updated Date Time',
+      ],
+    ],
+    'primary key' => ['id'],
+  ];
+  $lesson_completion_table = [
+    'description' => 'Course Completion Table.',
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => 'Primary Key',
+      ],
+      'user_id' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => '0',
+        'unsigned' => TRUE,
+        'description' => 'User ID',
+      ],
+      'course_id' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => '0',
+        'unsigned' => TRUE,
+        'description' => 'Course ID',
+      ],
+      'lesson_id' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => '0',
+        'unsigned' => TRUE,
+        'description' => 'Lesson ID',
+      ],
+      'completion_date' => [
+        'type' => 'varchar',
+        'mysql_type' => 'datetime',
+        'not null' => TRUE,
+        'description' => 'Completion Date Time',
+      ],
+    ],
+    'primary key' => ['id'],
+  ];
+  $course_grade_table = [
+    'description' => 'Course Grade Table.',
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => 'Primary Key',
+      ],
+      'course_id' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => '0',
+        'unsigned' => TRUE,
+        'description' => 'Course ID',
+      ],
+      'user_id' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => '0',
+        'unsigned' => TRUE,
+        'description' => 'User ID',
+      ],
+      'course_grade' => [
+        'type' => 'int',
+        'size' => 'tiny',
+        'unsigned' => TRUE,
+        'default' => 0,
+        'not null' => TRUE,
+        'description' => 'Grade for course completion to user',
+      ],
+      'created_date' => [
+        'type' => 'varchar',
+        'mysql_type' => 'datetime',
+        'not null' => TRUE,
+        'description' => 'Created Date Time',
+      ],
+    ],
+    'primary key' => ['id'],
+  ];
+  $schema = Database::getConnection()->schema();
+  $schema->createTable('custom_enrollment_course_enrollment_table', $course_enrollment_table);
+  $schema->createTable('custom_enrollment_lesson_completion_table', $lesson_completion_table);
+  $schema->createTable('custom_enrollment_course_grade_table', $course_grade_table);
+}

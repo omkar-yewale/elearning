@@ -1,0 +1,5 @@
+name: 'custom elearning'
+type: module
+description: 'Custom functionality for E-learning'
+package: Custom
+core_version_requirement: ^10
