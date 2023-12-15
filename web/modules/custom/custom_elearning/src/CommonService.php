@@ -85,4 +85,101 @@ class CommonService {
       ->execute();
   }
 
+  /**
+   * Checks student enrolled courses.
+   */
+  public function getEnrolledCourses($uid) {
+    $query = $this->connection->select('custom_enrollment_course_enrollment_table', 'es')
+      ->fields('es', ['course_id'])
+      ->condition('es.user_id', $uid);
+    $result = $query->execute()->fetchCol();
+
+    return $result;
+  }
+
+  /**
+   * Checks course and lesson association.
+   */
+  public function checkCourseLessonAssociation($courseNid, $lessonNid) {
+    // Check if the course node ID is valid.
+    $courseQuery = $this->entityTypeManager->getStorage('node')
+      ->getQuery()
+      ->condition('type', 'course')
+      ->condition('nid', $courseNid)
+      ->accessCheck(TRUE)
+      ->range(0, 1);
+
+    $courseResult = $courseQuery->execute();
+    if (empty($courseResult)) {
+      // The course node ID is not valid.
+      return 1;
+    }
+
+    // Check if the lesson node ID is associated with the course.
+    $courseNode = $this->entityTypeManager->getStorage('node')->load($courseNid);
+    // Get all lesson IDs associated with the course.
+    $associated_lesson_ids = [];
+    foreach ($courseNode->get('field_lessons')->referencedEntities() as $lesson) {
+      $associated_lesson_ids[] = $lesson->id();
+    }
+
+    // Check if the given lesson node ID is among the associated lessons.
+    if (!in_array($lessonNid, $associated_lesson_ids)) {
+      // The lesson is not associated with the course.
+      return 1;
+    }
+
+    // Both course and lesson are valid and associated.
+    return 0;
+  }
+
+  /**
+   * Get count of all Leasson complition.
+   */
+  public function checkLessonComplete($courseId) {
+    $query = $this->connection->select('custom_enrollment_lesson_completion_table', 'els')
+      ->fields('els', ['lesson_id'])
+      ->condition('els.user_id', $this->currentUser->id())
+      ->condition('els.course_id', $courseId)
+      ->countQuery();
+    $count = $query->execute()->fetchField();
+
+    return $count;
+  }
+
+  /**
+   * Checks Leasson complition status.
+   */
+  public function checkLessonStatus($courseId, $lessonId) {
+    $query = $this->connection->select('custom_enrollment_lesson_completion_table', 'els')
+      ->fields('els', ['id'])
+      ->condition('els.user_id', $this->currentUser->id())
+      ->condition('els.course_id', $courseId)
+      ->condition('els.lesson_id', $lessonId)
+      ->countQuery();
+    $count = $query->execute()->fetchField();
+
+    return $count;
+  }
+
+  /**
+   * Add lesson complete status.
+   */
+  public function addLessonCompleteDetails($courseId, $lessonId) {
+    $currentTime = date('Y-m-d H:i:s', \Drupal::time()->getRequestTime());
+    $this->connection->merge('custom_enrollment_lesson_completion_table')
+      ->key([
+        'user_id' => $this->currentUser->id(),
+        'course_id' => $courseId,
+        'lesson_id' => $lessonId,
+      ])
+      ->fields([
+        'user_id' => $this->currentUser->id(),
+        'course_id' => $courseId,
+        'lesson_id' => $lessonId,
+        'completion_date' => $currentTime,
+      ])
+      ->execute();
+  }
+
 }

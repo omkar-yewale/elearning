@@ -34,3 +34,4 @@ visibility:
       node: '@node.node_route_context:node'
     bundles:
       course: course
+      lessons: lessons

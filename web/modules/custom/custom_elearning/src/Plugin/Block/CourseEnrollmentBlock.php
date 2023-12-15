@@ -76,11 +76,21 @@ class CourseEnrollmentBlock extends BlockBase implements ContainerFactoryPluginI
       $user = $this->currentUser;
       if ($user->hasRole('student')) {
         // Return the enrollment form.
-        return $this->formBuilder->getForm('Drupal\custom_elearning\Form\EnrollmentStatusForm');
+        $form = $this->formBuilder->getForm('Drupal\custom_elearning\Form\EnrollmentStatusForm');
       }
     }
 
-    return [];
+    // Check if the user is viewing a lesson node.
+    if ($node && $node->getType() == 'lessons') {
+      // Check if the user role is student.
+      $user = $this->currentUser;
+      if ($user->hasRole('student')) {
+        // Return the enrollment form.
+        $form = $this->formBuilder->getForm('Drupal\custom_elearning\Form\LessonStatusForm');
+      }
+    }
+
+    return $form ?? [];
   }
 
 }

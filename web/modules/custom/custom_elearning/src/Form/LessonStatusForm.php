@@ -12,9 +12,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Provides a Custom elearning enrollment course form.
+ * Provides a Custom elearning lessons complete form.
  */
-class EnrollmentStatusForm extends FormBase {
+class LessonStatusForm extends FormBase {
 
   /**
    * Current User Object.
@@ -72,20 +72,26 @@ class EnrollmentStatusForm extends FormBase {
   public function buildForm(array $form, FormStateInterface $form_state): array {
     // Get the current View course ID.
     $node = $this->request->attributes->get('node');
-    if ($node instanceof NodeInterface && $node->bundle() == 'course') {
-      $courseId = $node->id();
+    $courseId = $this->request->get('cid');
+    if ($node instanceof NodeInterface && $node->bundle() == 'lessons') {
+      $lessonId = $node->id();
       // Check course enrollment status.
-      $status = $this->commonService->checkCourseEnrollmentStatus($courseId);
+      $status = $this->commonService->checkLessonStatus($courseId, $lessonId);
       $isEnrolled = ($status == 0);
-      // Hidden field.
+      // Hidden fields.
       $form['course_id'] = [
         '#type' => 'hidden',
         '#value' => $courseId,
       ];
 
+      $form['leasson_id'] = [
+        '#type' => 'hidden',
+        '#value' => $lessonId,
+      ];
+
       $form['actions']['submit'] = [
         '#type' => 'submit',
-        '#value' => $isEnrolled ? 'Enroll For this course' : 'Already Enrolled',
+        '#value' => $isEnrolled ? 'Complete Lesson' : 'Lesson Already Completed',
         '#attributes' =>
         $isEnrolled ? [] : ['readonly' => 'readonly', 'disabled' => 'disabled'],
       ];
@@ -99,14 +105,24 @@ class EnrollmentStatusForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $courseId = $form_state->getValue('course_id');
-    // Check user has already enroll the course or not.
-    $status = $this->commonService->checkCourseEnrollmentStatus($courseId);
-    if ($status != 0) {
-      $this->messenger()->addError($this->t('You alreadye enrolled for this course.'));
+    $lessonId = $form_state->getValue('leasson_id');
+    // Check course and leasson node association.
+    $association = $this->commonService->checkCourseLessonAssociation($courseId, $lessonId);
+    if ($association == 0) {
+      // Check user has already enroll the course or not.
+      $status = $this->commonService->checkLessonStatus($courseId, $lessonId);
+      if ($status != 0) {
+        $this->messenger()->addError($this->t('You already completed this lesson.'));
+      }
+      else {
+        // Add data into lesson completion table.
+        $this->commonService->addLessonCompleteDetails($courseId, $lessonId);
+        $form_state->setRedirect('view.my_learning.page_1');
+        $this->messenger()->addStatus($this->t('Successfully completed lesson.'));
+      }
     }
     else {
-      $this->commonService->addCourseEnrollmentDetails($courseId, 0);
-      $this->messenger()->addStatus($this->t('Successfully enrolled in the course'));
+      $this->messenger()->addError($this->t('Something went wrong.'));
     }
   }
 

@@ -6,9 +6,8 @@
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Link;
-use Drupal\user\Entity\User;
+use Drupal\views\Plugin\views\query\QueryPluginBase;
+use Drupal\views\ViewExecutable;
 
 /**
  * Implements hook_help().
@@ -23,3 +22,52 @@ function custom_elearning_help($route_name, RouteMatchInterface $route_match) {
   }
 }
 
+/**
+ * Implements hook_views_query_alter().
+ */
+function custom_elearning_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+  if ($view->id() == 'my_learning') {
+    $currentUid = \Drupal::currentUser()->id();
+    $commonService = \Drupal::service('custom_elearning.common_service');
+    // Get student enrolled courses.
+    $result = $commonService->getEnrolledCourses($currentUid);
+    // Use an empty array if $result is empty.
+    $result = empty($result) ? [0] : $result;
+    // Add a condition to the query to include only the enrolled course IDs.
+    $query->addWhere('AND', 'node_field_data.nid', $result, 'IN');
+  }
+}
+
+/**
+ * Implements hook_views_data().
+ */
+function custom_elearning_views_data() {
+  $data['views']['table']['group'] = t('Custom Global');
+  $data['views']['table']['join'] = [
+    // #global is a special flag which allows a table to appear all the time.
+    '#global' => [],
+  ];
+
+  $data['views']['course_progress'] = [
+    'title' => t('Course Progress'),
+    'help' => t('Show overall course progress.'),
+    'field' => [
+      'id' => 'course_progress',
+    ],
+  ];
+  return $data;
+}
+
+/**
+ *
+ */
+function custom_elearning_theme() {
+  return [
+    'progress_bar' => [
+      'variables' => [
+        'percentage' => NULL,
+        'attributes' => [],
+      ],
+    ],
+  ];
+}

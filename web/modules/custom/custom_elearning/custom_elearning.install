@@ -2,17 +2,13 @@
 
 /**
  * @file
+ * Install, update and uninstall functions for the custom elearning module.
  */
 
 use Drupal\Core\Database\Database;
 
 /**
- * @file
- * Install, update and uninstall functions for the custom elearning module.
- */
-
-/**
- *
+ * Created custom tables.
  */
 function custom_elearning_install() {
   $course_enrollment_table = [
