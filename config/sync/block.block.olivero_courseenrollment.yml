@@ -1,0 +1,37 @@
+uuid: bdd294fd-f84e-40f3-9aff-fca163a202d5
+langcode: en
+status: true
+dependencies:
+  module:
+    - custom_elearning
+    - node
+    - user
+  theme:
+    - olivero
+id: olivero_courseenrollment
+theme: olivero
+region: content
+weight: -6
+provider: null
+plugin: custom_elearning_course_enrollment
+settings:
+  id: custom_elearning_course_enrollment
+  label: 'Course Enrollment'
+  label_display: '0'
+  provider: custom_elearning
+visibility:
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      administrator: administrator
+      student: student
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      course: course
