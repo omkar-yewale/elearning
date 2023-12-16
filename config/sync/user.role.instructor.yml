@@ -3,9 +3,15 @@ langcode: en
 status: true
 dependencies:
   config:
+    - media.type.audio
+    - media.type.document
+    - media.type.image
+    - media.type.remote_video
+    - media.type.video
     - node.type.course
     - node.type.lessons
   module:
+    - media
     - node
     - paragraphs_type_permissions
     - system
@@ -15,17 +21,35 @@ weight: 5
 is_admin: null
 permissions:
   - 'access content'
+  - 'access media overview'
+  - 'create audio media'
   - 'create course content'
+  - 'create document media'
+  - 'create image media'
   - 'create lessons content'
+  - 'create media'
   - 'create paragraph content lesson_paragraph'
+  - 'create remote_video media'
+  - 'create video media'
   - 'delete paragraph content lesson_paragraph'
+  - 'edit any audio media'
   - 'edit any course content'
+  - 'edit any document media'
+  - 'edit any image media'
   - 'edit any lessons content'
+  - 'edit any remote_video media'
+  - 'edit any video media'
+  - 'edit own audio media'
   - 'edit own course content'
+  - 'edit own document media'
   - 'edit own lessons content'
+  - 'edit own remote_video media'
+  - 'edit own video media'
   - 'revert course revisions'
   - 'revert lessons revisions'
+  - 'update media'
   - 'update paragraph content lesson_paragraph'
   - 'view course revisions'
   - 'view lessons revisions'
+  - 'view own unpublished media'
   - 'view paragraph content lesson_paragraph'
