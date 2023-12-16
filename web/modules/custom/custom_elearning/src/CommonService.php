@@ -154,11 +154,10 @@ class CommonService {
     $query = $this->connection->select('custom_enrollment_lesson_completion_table', 'els')
       ->fields('els', ['lesson_id'])
       ->condition('els.user_id', $userId)
-      ->condition('els.course_id', $courseId)
-      ->countQuery();
-    $count = $query->execute()->fetchField();
+      ->condition('els.course_id', $courseId);
+    $ids = $query->execute()->fetchCol();
 
-    return $count;
+    return $ids;
   }
 
   /**
@@ -237,9 +236,16 @@ class CommonService {
    */
   public function calculateCoursePercentage($courseId, $userId) {
     $courseNode = $this->entityTypeManager->getStorage('node')->load($courseId);
-    $totalLessons = count($courseNode->get('field_lessons')->referencedEntities());
+    $associateLessonIds = [];
+    foreach ($courseNode->get('field_lessons')->referencedEntities() as $lesson) {
+      $associateLessonIds[] = $lesson->id();
+    }
+
     $completedLessons = $this->checkLessonComplete($courseId, $userId);
-    $percentage = ($totalLessons > 0) ? ((int) $completedLessons / (int) $totalLessons) * 100 : 0;
+    // Calculate the common lessons.
+    $commonLessons = array_intersect($associateLessonIds, $completedLessons);
+    // Calculate the percentage.
+    $percentage = (count($commonLessons) > 0) ? round((count($commonLessons) / count($associateLessonIds)) * 100, 2) : 0;
 
     return $percentage;
   }
