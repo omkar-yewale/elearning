@@ -45,7 +45,7 @@ class CourseProgress extends FieldPluginBase {
    *
    * @var \Drupal\Core\Session\AccountProxyInterface
    */
-  protected AccountProxyInterface $currentUser;
+  protected $currentUser;
 
   /**
    * Constructs a new AvailableRooms object.
@@ -65,7 +65,7 @@ class CourseProgress extends FieldPluginBase {
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, $request, $commonService, AccountProxyInterface $currentUser) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->currentDisplay = $configuration['view']->current_display;
+    $this->currentDisplay = isset($configuration['view']) ? $configuration['view']->current_display : NULL;
     $this->request = $request;
     $this->commonService = $commonService;
     $this->currentUser = $currentUser;
