@@ -1,0 +1,16 @@
+uuid: 88903136-2ef7-4f9f-be3f-328d46eea01f
+langcode: en
+status: true
+dependencies: {  }
+name: login_redirect_for_student
+label: 'Login Redirect For Student'
+triggers:
+  login: login
+destination_path: 'internal:/find-your-course'
+pages_type: 0
+pages: ''
+language: ''
+roles:
+  student: student
+weight: 0
+enabled: true

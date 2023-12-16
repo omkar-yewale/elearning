@@ -1,0 +1,20 @@
+uuid: 76149b44-0335-4095-b5a9-f25876da0f8e
+langcode: en
+status: true
+dependencies: {  }
+name: logout_redirect
+label: 'Logout Redirect'
+triggers:
+  logout: logout
+destination_path: 'internal:/user/login'
+pages_type: 0
+pages: ''
+language: ''
+roles:
+  authenticated: authenticated
+  content_editor: content_editor
+  administrator: administrator
+  student: student
+  instructor: instructor
+weight: 0
+enabled: true
