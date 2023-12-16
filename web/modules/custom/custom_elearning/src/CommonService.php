@@ -37,14 +37,14 @@ class CommonService {
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
-   * @param \Drupal\Core\Session\AccountProxyInterface $current_user
+   * @param \Drupal\Core\Session\AccountProxyInterface $currentUser
    *   The current user.
    * @param \Drupal\Core\Database\Connection $connection
    *   The database connector.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, AccountProxyInterface $current_user, Connection $connection) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, AccountProxyInterface $currentUser, Connection $connection) {
     $this->entityTypeManager = $entity_type_manager;
-    $this->currentUser = $current_user;
+    $this->currentUser = $currentUser;
     $this->connection = $connection;
   }
 
@@ -65,6 +65,20 @@ class CommonService {
   /**
    * Checks Course enrollment status.
    */
+  public function checkCourseProgressStatus($courseId, $userId) {
+    $query = $this->connection->select('custom_enrollment_course_enrollment_table', 'es')
+      ->fields('es', ['course_status'])
+      ->condition('es.course_id', $courseId)
+      ->condition('es.user_id', $userId);
+
+    $status = $query->execute()->fetchField();
+
+    return $status;
+  }
+
+  /**
+   * Checks Course enrollment status.
+   */
   public function addCourseEnrollmentDetails($courseId, $courseStatus = NULL) {
     $currentTime = date('Y-m-d H:i:s', \Drupal::time()->getRequestTime());
     $this->connection->merge('custom_enrollment_course_enrollment_table')
@@ -79,7 +93,7 @@ class CommonService {
         'created_date' => $currentTime,
       ])
       ->updateFields([
-        'course_status' => $currentTime,
+        'course_status' => $courseStatus ?? 0,
         'updated_date' => $currentTime,
       ])
       ->execute();
@@ -136,10 +150,10 @@ class CommonService {
   /**
    * Get count of all Leasson complition.
    */
-  public function checkLessonComplete($courseId) {
+  public function checkLessonComplete($courseId, $userId) {
     $query = $this->connection->select('custom_enrollment_lesson_completion_table', 'els')
       ->fields('els', ['lesson_id'])
-      ->condition('els.user_id', $this->currentUser->id())
+      ->condition('els.user_id', $userId)
       ->condition('els.course_id', $courseId)
       ->countQuery();
     $count = $query->execute()->fetchField();
@@ -180,6 +194,54 @@ class CommonService {
         'completion_date' => $currentTime,
       ])
       ->execute();
+  }
+
+  /**
+   * Checks Grade status.
+   */
+  public function getCourseGrade($courseId, $userId) {
+    $query = $this->connection->select('custom_enrollment_course_grade_table', 'cg')
+      ->fields('cg', ['course_grade'])
+      ->condition('cg.user_id', $userId)
+      ->condition('cg.course_id', $courseId);
+
+    $result = $query->execute()->fetchField();
+
+    return $result;
+  }
+
+  /**
+   * Add course Grade.
+   */
+  public function addCourseGrade($courseId, $userId, $grade) {
+    $currentTime = date('Y-m-d H:i:s', \Drupal::time()->getRequestTime());
+    $this->connection->merge('custom_enrollment_course_grade_table')
+      ->key([
+        'course_id' => $courseId,
+        'user_id' => $userId,
+      ])
+      ->fields([
+        'course_id' => $courseId,
+        'user_id' => $userId,
+        'course_grade' => $grade,
+        'created_date' => $currentTime,
+      ])
+      ->updateFields([
+        'course_grade' => $grade,
+      ])
+      ->execute();
+  }
+
+  /**
+   * Calculate course completion percentage..
+   */
+  public function calculateCoursePercentage($courseId, $userId) {
+    $courseNode = $this->entityTypeManager->getStorage('node')->load($courseId);
+    $totalLessons = count($courseNode->get('field_lessons')->referencedEntities());
+    $completedLessons = $this->checkLessonComplete($courseId, $userId);
+    $percentage = ($totalLessons > 0) ? ((int) $completedLessons / (int) $totalLessons) * 100 : 0;
+
+    return $percentage;
   }
 
 }

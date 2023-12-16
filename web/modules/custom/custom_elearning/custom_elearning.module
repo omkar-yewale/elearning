@@ -59,14 +59,20 @@ function custom_elearning_views_data() {
 }
 
 /**
- *
+ * Implements hook_theme().
  */
-function custom_elearning_theme() {
+function custom_elearning_theme($existing, $type, $theme, $path) {
   return [
-    'progress_bar' => [
+    'certificate_generate' => [
       'variables' => [
-        'percentage' => NULL,
-        'attributes' => [],
+        'user_name' => NULL,
+        'course_title' => NULL,
+        'date' => NULL,
+      ],
+    ],
+    'instructor_dashboard' => [
+      'variables' => [
+        'data' => NULL,
       ],
     ],
   ];

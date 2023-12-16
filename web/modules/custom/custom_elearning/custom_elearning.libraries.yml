@@ -1,0 +1,5 @@
+# Custom library for general purposes.
+custom:
+  css:
+    theme:
+      assets/css/style.css: {}

@@ -2,6 +2,7 @@
 
 namespace Drupal\custom_elearning\Plugin\views\field;
 
+use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\views\Plugin\views\display\DisplayPluginBase;
 use Drupal\views\Plugin\views\field\FieldPluginBase;
 use Drupal\views\ResultRow;
@@ -40,6 +41,13 @@ class CourseProgress extends FieldPluginBase {
   protected $commonService;
 
   /**
+   * The current user.
+   *
+   * @var \Drupal\Core\Session\AccountProxyInterface
+   */
+  protected AccountProxyInterface $currentUser;
+
+  /**
    * Constructs a new AvailableRooms object.
    *
    * @param array $configuration
@@ -52,12 +60,15 @@ class CourseProgress extends FieldPluginBase {
    *   The request object.
    * @param \Drupal\custom_elearning\CommonService $commonService
    *   The common services.
+   * @param \Drupal\Core\Session\AccountProxyInterface $currentUser
+   *   The current user.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, $request, $commonService) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, $request, $commonService, AccountProxyInterface $currentUser) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->currentDisplay = $configuration['view']->current_display;
     $this->request = $request;
     $this->commonService = $commonService;
+    $this->currentUser = $currentUser;
   }
 
   /**
@@ -69,7 +80,8 @@ class CourseProgress extends FieldPluginBase {
       $plugin_id,
       $plugin_definition,
       $container->get('request_stack')->getCurrentRequest(),
-      $container->get('custom_elearning.common_service')
+      $container->get('custom_elearning.common_service'),
+      $container->get('current_user')
     );
   }
 
@@ -111,12 +123,19 @@ class CourseProgress extends FieldPluginBase {
    */
   public function render(ResultRow $values) {
     $node = $values->_entity;
+    $currentUserId = $this->currentUser->id();
     $courseId = $node->get('nid')->getValue()[0]['value'];
-    $totalLessons = count($node->get('field_lessons')->referencedEntities());
-    $completedLessons = $this->commonService->checkLessonComplete($courseId);
-    $percentage = ($totalLessons > 0) ? ((int) $completedLessons / (int) $totalLessons) * 100 : 0;
+    // Calculate percentage of course complition.
+    $percentage = $this->commonService->calculateCoursePercentage($courseId, $currentUserId);
+    // Creating output for render.
+    $output = '<div class="progress">' . $percentage . '% Complete' . '</div>';
+
+    // Check if $percentage is 100 and add the view certificate button.
+    if ($percentage == 100) {
+      $output .= '<a href="' . base_path() . '/my-courses/certificate/' . $courseId . '" class="button button--action button--primary" target="_blank"> View Certificate </a>';
+    }
     return [
-      '#markup' => '<div class="fa">' . $percentage . '% Complete' . '</div>',
+      '#markup' => $output,
     ];
   }
 

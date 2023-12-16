@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Provides a Custom elearning lessons complete form.
  */
-class LessonStatusForm extends FormBase {
+class GradeSubmitForm extends FormBase {
 
   /**
    * Current User Object.
@@ -72,28 +72,41 @@ class LessonStatusForm extends FormBase {
   public function buildForm(array $form, FormStateInterface $form_state): array {
     // Get the current View course ID.
     $node = $this->request->attributes->get('node');
-    $courseId = $this->request->get('cid');
-    if ($node instanceof NodeInterface && $node->bundle() == 'lessons') {
-      $lessonId = $node->id();
-      // Check course enrollment status.
-      $status = $this->commonService->checkLessonStatus($courseId, $lessonId);
-      $isEnrolled = ($status == 0);
+    $userId = $this->request->get('uid');
+    if ($node instanceof NodeInterface && $node->bundle() == 'course') {
+      $courseId = $node->id();
+      // Check course grade result.
+      $grade = $this->commonService->getCourseGrade($courseId, $userId);
+
       // Hidden fields.
       $form['course_id'] = [
         '#type' => 'hidden',
         '#value' => $courseId,
       ];
-
-      $form['leasson_id'] = [
+      $form['user_id'] = [
         '#type' => 'hidden',
-        '#value' => $lessonId,
+        '#value' => $userId,
+      ];
+      $form['grade'] = [
+        '#type' => 'select',
+        '#title' => $this->t('Grade the Course'),
+        '#required' => TRUE,
+        '#default_value' => $grade ?? 1,
+        '#options' => [
+          '1' => $this->t('1 star'),
+          '2' => $this->t('2 stars'),
+          '3' => $this->t('3 stars'),
+          '4' => $this->t('4 stars'),
+          '5' => $this->t('5 stars'),
+        ],
       ];
 
-      $form['actions']['submit'] = [
-        '#type' => 'submit',
-        '#value' => $isEnrolled ? 'Complete Lesson' : 'Lesson Already Completed',
-        '#attributes' =>
-        $isEnrolled ? [] : ['readonly' => 'readonly', 'disabled' => 'disabled'],
+      $form['actions'] = [
+        '#type' => 'actions',
+        'submit' => [
+          '#type' => 'submit',
+          '#value' => $this->t('Submit Grade'),
+        ],
       ];
     }
 
@@ -105,32 +118,17 @@ class LessonStatusForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $courseId = $form_state->getValue('course_id');
-    $lessonId = $form_state->getValue('leasson_id');
-    // Check course and leasson node association.
-    $association = $this->commonService->checkCourseLessonAssociation($courseId, $lessonId);
-    if ($association == 0) {
-      // Check lesson is completed by user or not.
-      $status = $this->commonService->checkLessonStatus($courseId, $lessonId);
-      if ($status != 0) {
-        $this->messenger()->addError($this->t('You already completed this lesson.'));
-      }
-      else {
-        // Add data into lesson completion table.
-        $this->commonService->addLessonCompleteDetails($courseId, $lessonId);
-        // Check overall course completion percentage.
-        $userId = $this->currentUser->id();
-        $percentage = $this->commonService->calculateCoursePercentage($courseId, $userId);
-        $status = ($percentage == 100) ? 2 : 1;
-        // Add update in enrollment table.
-        $this->commonService->addCourseEnrollmentDetails($courseId, $status);
-        // Redirect to the my learning page.
-        $form_state->setRedirect('view.my_learning.page_1');
-        $this->messenger()->addStatus($this->t('Successfully completed lesson.'));
-      }
+    $userId = $form_state->getValue('user_id');
+    $grade = $form_state->getValue('grade');
+    $currentStatus = $this->commonService->checkCourseProgressStatus($courseId, $userId);
+    if ($currentStatus == 2) {
+      $this->commonService->addCourseGrade($courseId, $userId, $grade);
+      $this->messenger()->addStatus($this->t('Grade submitted successfully.'));
     }
     else {
-      $this->messenger()->addError($this->t('Something went wrong.'));
+      $this->messenger()->addError($this->t('Course not completed yet from user.'));
     }
+
   }
 
 }

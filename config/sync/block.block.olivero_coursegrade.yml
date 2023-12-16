@@ -1,0 +1,36 @@
+uuid: d08f06e7-6599-46af-aa8c-5a2db5f36547
+langcode: en
+status: true
+dependencies:
+  module:
+    - custom_elearning
+    - node
+    - user
+  theme:
+    - olivero
+id: olivero_coursegrade
+theme: olivero
+region: content
+weight: 0
+provider: null
+plugin: custom_elearning_course_grade
+settings:
+  id: custom_elearning_course_grade
+  label: 'Course Grade'
+  label_display: '0'
+  provider: custom_elearning
+visibility:
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      instructor: instructor
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      course: course

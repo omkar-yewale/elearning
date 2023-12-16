@@ -1,0 +1,17 @@
+custom_elearning.student_course_certificate:
+  path: '/my-courses/certificate/{cid}'
+  defaults:
+    _title: 'Certificate'
+    _controller: '\Drupal\custom_elearning\Controller\CourseCertificate::getCertificate'
+  requirements:
+    _permission: 'access content'
+    _role: 'student'
+
+custom_elearning.instructor_dashboard:
+  path: '/dashboard'
+  defaults:
+    _title: 'Instructor Dashboard'
+    _controller: '\Drupal\custom_elearning\Controller\InstructorDashboard::getDashboardData'
+  requirements:
+    _permission: 'access content'
+    _role: 'instructor'

@@ -7,18 +7,20 @@ use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\custom_elearning\CommonService;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Provides a course enrollment block.
+ * Provides a course grade block.
  *
  * @Block(
- *   id = "custom_elearning_course_enrollment",
- *   admin_label = @Translation("Course Enrollment"),
+ *   id = "custom_elearning_course_grade",
+ *   admin_label = @Translation("Course Grade"),
  *   category = @Translation("Custom"),
  * )
  */
-class CourseEnrollmentBlock extends BlockBase implements ContainerFactoryPluginInterface {
+class CourseGradeBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
    * The form builder service.
@@ -42,13 +44,29 @@ class CourseEnrollmentBlock extends BlockBase implements ContainerFactoryPluginI
   protected $currentUser;
 
   /**
+   * The current request object.
+   *
+   * @var \Symfony\Component\HttpFoundation\Request
+   */
+  protected $request;
+
+  /**
+   * The common service.
+   *
+   * @var \Drupal\custom_elearning\CommonService
+   */
+  protected $commonService;
+
+  /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, FormBuilderInterface $form_builder, RouteMatchInterface $route_match, AccountProxyInterface $current_user) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, FormBuilderInterface $form_builder, RouteMatchInterface $route_match, AccountProxyInterface $currentUser, Request $request, CommonService $commonService) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->formBuilder = $form_builder;
     $this->routeMatch = $route_match;
-    $this->currentUser = $current_user;
+    $this->currentUser = $currentUser;
+    $this->request = $request;
+    $this->commonService = $commonService;
   }
 
   /**
@@ -61,7 +79,9 @@ class CourseEnrollmentBlock extends BlockBase implements ContainerFactoryPluginI
       $plugin_definition,
       $container->get('form_builder'),
       $container->get('current_route_match'),
-      $container->get('current_user')
+      $container->get('current_user'),
+      $container->get('request_stack')->getCurrentRequest(),
+      $container->get('custom_elearning.common_service')
     );
   }
 
@@ -71,22 +91,16 @@ class CourseEnrollmentBlock extends BlockBase implements ContainerFactoryPluginI
   public function build() {
     // Check if the user is viewing a course node.
     $node = $this->routeMatch->getParameter('node');
-    if ($node && $node->getType() == 'course') {
-      // Check if the user role is student.
-      $user = $this->currentUser;
-      if ($user->hasRole('student')) {
-        // Return the enrollment form.
-        $form = $this->formBuilder->getForm('Drupal\custom_elearning\Form\EnrollmentStatusForm');
-      }
-    }
-
-    // Check if the user is viewing a lesson node.
-    if ($node && $node->getType() == 'lessons') {
-      // Check if the user role is student.
-      $user = $this->currentUser;
-      if ($user->hasRole('student')) {
-        // Return the enrollment form.
-        $form = $this->formBuilder->getForm('Drupal\custom_elearning\Form\LessonStatusForm');
+    $uid = $this->request->get('uid');
+    $currentStatus = $this->commonService->checkCourseProgressStatus($node->id(), $uid);
+    if (!empty($uid) && $currentStatus == 2) {
+      if ($node && $node->getType() == 'course') {
+        // Check if the user role is student.
+        $user = $this->currentUser;
+        if ($user->hasRole('instructor')) {
+          // Return the enrollment form.
+          $form = $this->formBuilder->getForm('Drupal\custom_elearning\Form\GradeSubmitForm');
+        }
       }
     }
 

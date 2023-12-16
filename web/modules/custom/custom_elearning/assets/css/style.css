@@ -1,0 +1,53 @@
+.certificate-container {
+  border: 20px solid tan;
+  width: 750px;
+  height: 563px;
+  display: table-cell;
+  vertical-align: middle;
+}
+.logo {
+  color: tan;
+  text-align: center;
+}
+
+.marquee {
+  color: tan;
+  font-size: 48px;
+  margin: 20px;
+  text-align: center;
+}
+.course-title {
+  text-align: center;
+  color: tan;
+  font-size: 20px;
+  margin: 20px;
+}
+.assignment {
+  margin: 20px;
+  text-align: center;
+}
+.person {
+  border-bottom: 2px solid black;
+  font-size: 32px;
+  font-style: italic;
+  margin: 20px auto;
+  width: 400px;
+  text-align: center;
+}
+.reason {
+  margin: 20px;
+}
+.signature {
+  font-size: 20px;
+  font-style: italic;
+  margin: 10px;
+  width: 225px;
+  text-align: center;
+  position: relative;
+  left: 450px;
+}
+.signature-text {
+  margin: 80px;
+  position: relative;
+  left: 450px;
+}

@@ -1,0 +1,48 @@
+{% set base_url = url('<front>') %}
+
+<table>
+	<thead>
+		<th>
+			Student Name
+		</th>
+		<th>
+			Enrolled course title
+		</th>
+		<th>
+			Progress
+		</th>
+		<th>
+			Enrolled At
+		</th>
+		<th>
+			Actions
+		</th>
+	</thead>
+	<tbody>
+		{% if data is empty %}
+			<tr>
+				<td colspan="8" style="text-align:center;">
+					No Records found.
+				</td>
+			</tr>
+		{% else %}
+			{% for dashboard in data %}
+				<tr>
+					<td>{{ dashboard.studentName }}</td>
+					<td>{{ dashboard.courseTitle }}</td>
+					<td>{{ dashboard.progress }} %</td>
+					<td>{{ dashboard.createdDate }}</td>
+					<td>
+						{% if dashboard.progress == 100 %}
+							<a href="{{ base_url }}node/{{ dashboard.courseId }}?uid={{ dashboard.userId }}" target="_blank">Add Grade</a>
+						{% else %}
+							<a href="{{ base_url }}node/{{ dashboard.courseId }}" target="_blank">View Course</a>
+						{% endif %}
+					</td>
+				</tr>
+			{% endfor %}
+
+		{% endif %}
+	</tbody>
+
+</table>
