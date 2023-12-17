@@ -40,13 +40,13 @@ Instructors can assign and modify grades for students and their enrolled courses
 
 Feel free to contact me for any issues or queries related to the project.
 
-### Tools & Prerequisites
+### Tools
 
 The site setup requires the following tools. Make sure to use either the latest version or, at a minimum, the version specified below.
 
 * [Composer](https://getcomposer.org/download/)
 * [Xampp](https://www.apachefriends.org/download.html)
-* OR (If you're not using XAMPP, you have the option to use DDEV.)
+* OR If you're not using XAMPP, you have the option to use DDEV.
 * [Docker](https://docs.docker.com/install/)
 * [DDEV](https://ddev.readthedocs.io/en/stable/#installation)
 * [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
