@@ -45,7 +45,7 @@ Feel free to contact me for any issues or queries related to the project.
 The site setup requires the following tools. Make sure to use either the latest version or, at a minimum, the version specified below.
 
 * [Composer](https://getcomposer.org/download/)
-* [Xampp] (https://www.apachefriends.org/download.html)
+* [Xampp](https://www.apachefriends.org/download.html)
 * OR (If you're not using XAMPP, you have the option to use DDEV.)
 * [Docker](https://docs.docker.com/install/)
 * [DDEV](https://ddev.readthedocs.io/en/stable/#installation)
