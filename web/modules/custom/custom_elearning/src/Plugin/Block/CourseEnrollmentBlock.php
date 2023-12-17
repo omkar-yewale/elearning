@@ -44,11 +44,11 @@ class CourseEnrollmentBlock extends BlockBase implements ContainerFactoryPluginI
   /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, FormBuilderInterface $form_builder, RouteMatchInterface $route_match, AccountProxyInterface $current_user) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, FormBuilderInterface $form_builder, RouteMatchInterface $route_match, AccountProxyInterface $currentUser) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->formBuilder = $form_builder;
     $this->routeMatch = $route_match;
-    $this->currentUser = $current_user;
+    $this->currentUser = $currentUser;
   }
 
   /**
@@ -69,28 +69,21 @@ class CourseEnrollmentBlock extends BlockBase implements ContainerFactoryPluginI
    * {@inheritdoc}
    */
   public function build() {
-    // Check if the user is viewing a course node.
+    $form = [];
     $node = $this->routeMatch->getParameter('node');
-    if ($node && $node->getType() == 'course') {
-      // Check if the user role is student.
-      $user = $this->currentUser;
-      if ($user->hasRole('student')) {
+    // Check if the user is viewing a course or lessons node.
+    if ($node && $user = $this->currentUser) {
+      if ($node->getType() == 'course' && $user->hasRole('student')) {
         // Return the enrollment form.
         $form = $this->formBuilder->getForm('Drupal\custom_elearning\Form\EnrollmentStatusForm');
       }
-    }
-
-    // Check if the user is viewing a lesson node.
-    if ($node && $node->getType() == 'lessons') {
-      // Check if the user role is student.
-      $user = $this->currentUser;
-      if ($user->hasRole('student')) {
-        // Return the enrollment form.
+      elseif ($node->getType() == 'lessons' && $user->hasRole('student')) {
+        // Return the lesson complete form.
         $form = $this->formBuilder->getForm('Drupal\custom_elearning\Form\LessonStatusForm');
       }
     }
 
-    return $form ?? [];
+    return $form;
   }
 
   /**

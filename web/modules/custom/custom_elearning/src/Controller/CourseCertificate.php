@@ -26,7 +26,7 @@ class CourseCertificate extends ControllerBase {
    *
    * @var \Drupal\Core\Database\Connection
    */
-  protected Connection $connection;
+  protected $connection;
 
   /**
    * The current user service.
@@ -65,7 +65,7 @@ class CourseCertificate extends ControllerBase {
   }
 
   /**
-   * Build the response.
+   * Build the response for certificate.
    */
   public function getCertificate($cid) {
     $currentUid = $this->currentUser;

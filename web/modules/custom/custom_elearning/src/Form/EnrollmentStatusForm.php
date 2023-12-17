@@ -17,18 +17,25 @@ use Symfony\Component\HttpFoundation\Request;
 class EnrollmentStatusForm extends FormBase {
 
   /**
-   * Current User Object.
+   * The current user service.
+   *
+   * @var \Drupal\Core\Session\AccountProxyInterface
    */
-  protected AccountProxyInterface $currentUser;
+  protected $currentUser;
 
   /**
-   * Database connection Object.
+   * The database connection.
+   *
+   * @var \Drupal\Core\Database\Connection
    */
-  protected Connection $database;
+  protected $database;
+
   /**
    * Symfony Request Object.
+   *
+   * @var \Symfony\Component\HttpFoundation\Request
    */
-  protected Request $request;
+  protected $request;
 
   /**
    * The common service.
@@ -70,7 +77,7 @@ class EnrollmentStatusForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state): array {
-    // Get the current View course ID.
+    // Get the current course ID.
     $node = $this->request->attributes->get('node');
     if ($node instanceof NodeInterface && $node->bundle() == 'course') {
       $courseId = $node->id();

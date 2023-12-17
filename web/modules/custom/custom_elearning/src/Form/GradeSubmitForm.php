@@ -17,18 +17,25 @@ use Symfony\Component\HttpFoundation\Request;
 class GradeSubmitForm extends FormBase {
 
   /**
-   * Current User Object.
+   * The current user service.
+   *
+   * @var \Drupal\Core\Session\AccountProxyInterface
    */
-  protected AccountProxyInterface $currentUser;
+  protected $currentUser;
 
   /**
-   * Database connection Object.
+   * The database connection.
+   *
+   * @var \Drupal\Core\Database\Connection
    */
-  protected Connection $database;
+  protected $database;
+
   /**
    * Symfony Request Object.
+   *
+   * @var \Symfony\Component\HttpFoundation\Request
    */
-  protected Request $request;
+  protected $request;
 
   /**
    * The common service.
@@ -120,13 +127,14 @@ class GradeSubmitForm extends FormBase {
     $courseId = $form_state->getValue('course_id');
     $userId = $form_state->getValue('user_id');
     $grade = $form_state->getValue('grade');
+    // Before submiting grade validate user course progress.
     $currentStatus = $this->commonService->checkCourseProgressStatus($courseId, $userId);
     if ($currentStatus == 2) {
       $this->commonService->addCourseGrade($courseId, $userId, $grade);
       $this->messenger()->addStatus($this->t('Grade submitted successfully.'));
     }
     else {
-      $this->messenger()->addError($this->t('Course not completed yet from user.'));
+      $this->messenger()->addError($this->t('100% Course not completed yet from user.'));
     }
 
   }

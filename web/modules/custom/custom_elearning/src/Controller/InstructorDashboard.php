@@ -26,7 +26,7 @@ class InstructorDashboard extends ControllerBase {
    *
    * @var \Drupal\Core\Database\Connection
    */
-  protected Connection $connection;
+  protected $connection;
 
   /**
    * The current user service.
@@ -80,12 +80,16 @@ class InstructorDashboard extends ControllerBase {
       $courseTitle = $courseNode->getTitle();
       $studentUser = $this->entityTypeManager->getStorage('user')->load($userId);
       $studentName = $studentUser->getDisplayName();
+      $enrollment = $row->course_status;
+      $enrollmentStatuses = ['Enrolled', 'In-Progress', 'Completed'];
+      $enrollmentStatus = $enrollmentStatuses[$enrollment];
 
       $dashboardData[] = [
         "courseId" => $courseId,
         "userId" => $userId,
         "studentName" => $studentName,
         "courseTitle" => $courseTitle,
+        "enrollmentStatus" => $enrollmentStatus,
         "progress" => $progress,
         "createdDate" => $row->created_date,
       ];

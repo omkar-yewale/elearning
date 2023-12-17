@@ -92,19 +92,15 @@ class CourseGradeBlock extends BlockBase implements ContainerFactoryPluginInterf
     // Check if the user is viewing a course node.
     $node = $this->routeMatch->getParameter('node');
     $uid = $this->request->get('uid');
-    $currentStatus = $this->commonService->checkCourseProgressStatus($node->id(), $uid);
-    if (!empty($uid) && $currentStatus == 2) {
-      if ($node && $node->getType() == 'course') {
-        // Check if the user role is student.
-        $user = $this->currentUser;
-        if ($user->hasRole('instructor')) {
-          // Return the enrollment form.
-          $form = $this->formBuilder->getForm('Drupal\custom_elearning\Form\GradeSubmitForm');
-        }
+    $form = [];
+    if ($node && $node->getType() == 'course' && !empty($uid)) {
+      $currentStatus = $this->commonService->checkCourseProgressStatus($node->id(), $uid);
+      if ($currentStatus == 2 && $this->currentUser->hasRole('instructor')) {
+        $form = $this->formBuilder->getForm('Drupal\custom_elearning\Form\GradeSubmitForm');
       }
     }
 
-    return $form ?? [];
+    return $form;
   }
 
   /**

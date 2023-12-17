@@ -23,14 +23,14 @@ class CommonService {
    *
    * @var \Drupal\Core\Session\AccountProxyInterface
    */
-  protected AccountProxyInterface $currentUser;
+  protected $currentUser;
 
   /**
    * The database connection.
    *
    * @var \Drupal\Core\Database\Connection
    */
-  protected Connection $connection;
+  protected $connection;
 
   /**
    * Constructs a CommonService.
@@ -63,7 +63,7 @@ class CommonService {
   }
 
   /**
-   * Checks Course enrollment status.
+   * Checks Course enrollment progress status.
    */
   public function checkCourseProgressStatus($courseId, $userId) {
     $query = $this->connection->select('custom_enrollment_course_enrollment_table', 'es')
@@ -77,7 +77,7 @@ class CommonService {
   }
 
   /**
-   * Checks Course enrollment status.
+   * Add course enrollment details into enrollment table.
    */
   public function addCourseEnrollmentDetails($courseId, $courseStatus = NULL) {
     $currentTime = date('Y-m-d H:i:s', \Drupal::time()->getRequestTime());
@@ -100,7 +100,7 @@ class CommonService {
   }
 
   /**
-   * Checks student enrolled courses.
+   * Get student all enrolled courses.
    */
   public function getEnrolledCourses($uid) {
     $query = $this->connection->select('custom_enrollment_course_enrollment_table', 'es')
@@ -148,7 +148,7 @@ class CommonService {
   }
 
   /**
-   * Get count of all Leasson complition.
+   * Get all completed Leassons.
    */
   public function checkLessonComplete($courseId, $userId) {
     $query = $this->connection->select('custom_enrollment_lesson_completion_table', 'els')
@@ -176,7 +176,7 @@ class CommonService {
   }
 
   /**
-   * Add lesson complete status.
+   * Add complete lesson status.
    */
   public function addLessonCompleteDetails($courseId, $lessonId) {
     $currentTime = date('Y-m-d H:i:s', \Drupal::time()->getRequestTime());
@@ -196,7 +196,7 @@ class CommonService {
   }
 
   /**
-   * Checks Grade status.
+   * Checks studend course grade status.
    */
   public function getCourseGrade($courseId, $userId) {
     $query = $this->connection->select('custom_enrollment_course_grade_table', 'cg')
@@ -232,7 +232,7 @@ class CommonService {
   }
 
   /**
-   * Calculate course completion percentage..
+   * Calculate course completion percentage.
    */
   public function calculateCoursePercentage($courseId, $userId) {
     $courseNode = $this->entityTypeManager->getStorage('node')->load($courseId);
@@ -240,7 +240,7 @@ class CommonService {
     foreach ($courseNode->get('field_lessons')->referencedEntities() as $lesson) {
       $associateLessonIds[] = $lesson->id();
     }
-
+    // Get all completed lessons.
     $completedLessons = $this->checkLessonComplete($courseId, $userId);
     // Calculate the common lessons.
     $commonLessons = array_intersect($associateLessonIds, $completedLessons);

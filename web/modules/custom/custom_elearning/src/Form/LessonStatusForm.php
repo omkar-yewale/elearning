@@ -17,18 +17,25 @@ use Symfony\Component\HttpFoundation\Request;
 class LessonStatusForm extends FormBase {
 
   /**
-   * Current User Object.
+   * The current user service.
+   *
+   * @var \Drupal\Core\Session\AccountProxyInterface
    */
-  protected AccountProxyInterface $currentUser;
+  protected $currentUser;
 
   /**
-   * Database connection Object.
+   * The database connection.
+   *
+   * @var \Drupal\Core\Database\Connection
    */
-  protected Connection $database;
+  protected $database;
+
   /**
    * Symfony Request Object.
+   *
+   * @var \Symfony\Component\HttpFoundation\Request
    */
-  protected Request $request;
+  protected $request;
 
   /**
    * The common service.
