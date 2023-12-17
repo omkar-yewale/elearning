@@ -4,36 +4,36 @@ This is an e-learning platform where students can enroll in available courses an
 
 ## About
 
-* Project Overview
+Project Overview:
 This project is a Drupal-based E-learning site designed to accommodate various roles, including Student, Instructor, and Admin. Each role has specific behaviors tailored to their responsibilities.
 
-* Features
+Features:
 Courses and Lessons
 The E-learning site revolves around courses and lessons. Each course is associated with multiple lessons.
 
-* Roles
+Roles:
 Instructor
 Instructors have the ability to create and update courses and lessons. They can create courses at (/node/add/course) and lessons at (/node/add/lessons). Once courses and lessons are successfully created, they automatically appear on the "Find Your Course" page (/find-your-course), which is visible to both instructors and students.
 
 Student
 Students can navigate to the "Find Your Course" (/find-your-course) page, select a desired course from the list, and enroll in it. Enrolled courses can be viewed under the "My Learning" section (/my-courses/learning). Here, students can see all enrolled courses, their respective lessons, and individual course completion progress.
 
-* Completion Progress
+Completion Progress:
 Course completion progress is calculated based on the completion of lessons. For example, if a course has 5 lessons and a student completes lesson 1, it signifies 20% completion of the course.
 
-* Lesson Completion
+Lesson Completion:
 To complete a lesson, students can navigate to the lesson page, complete the lesson, and find the "Complete Lesson" button at the bottom of the page. Once all lessons are completed, the overall progress is visible to students under the "My Learning" section.
 
-* Instructor Dashboard
+Instructor Dashboard:
 Instructors have the privilege to check the overall progress of students enrolled in their courses on their dashboard page (/dashboard).
 
-* Grading
+Grading:
 Upon reaching 100% completion of a course, instructors can see an "Add Grade" link on their dashboard. Instructors can assign grades to students and their enrolled courses. Grades can be modified at any time.
 
-* Certificate
+Certificate:
 Upon 100% course completion, students can find a "View Certificate" button under the "My Learning" and "Completed course" section.
 
-* Validations
+Validations:
 Each student can enroll in a course only once. "Enroll course" button is no longer visible/accesiable for that particular course for that user.
 Once a lesson is completed, the "Complete Lesson" button is no longer visible/accesiable for that particular lesson for that user.
 Instructors can assign and modify grades for students and their enrolled courses.
