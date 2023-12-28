@@ -1,0 +1,23 @@
+uuid: e1b813af-0834-4a59-bb63-7d6a799df650
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+  theme:
+    - custom_elearning
+_core:
+  default_config_hash: 0gq3VPg-_UM69FCCWurLFIrrnIjC2HLKhwo9iQNtcUo
+id: custom_elearning_syndicate
+theme: custom_elearning
+region: social
+weight: 0
+provider: null
+plugin: node_syndicate_block
+settings:
+  id: node_syndicate_block
+  label: 'RSS feed'
+  label_display: '0'
+  provider: node
+  block_count: 10
+visibility: {  }

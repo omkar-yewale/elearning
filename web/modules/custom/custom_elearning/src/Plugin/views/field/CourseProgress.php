@@ -122,6 +122,7 @@ class CourseProgress extends FieldPluginBase {
    * {@inheritdoc}
    */
   public function render(ResultRow $values) {
+    global $base_url;
     $roles = [];
     $node = $values->_entity;
     if (empty($node)) {
@@ -139,7 +140,7 @@ class CourseProgress extends FieldPluginBase {
     $roles = $this->currentUser->getRoles();
     // Check if $percentage is 100 and add the view certificate button.
     if ($percentage == 100 && in_array('student', $roles)) {
-      $output .= '<a href="' . base_path() . '/my-courses/certificate/' . $courseId . '" class="button button--action button--primary" target="_blank"> View Certificate </a>';
+      $output .= '<a href="' . $base_url . '/my-courses/certificate/' . $courseId . '" class="button button--action button--primary" target="_blank"> View Certificate </a>';
     }
     return [
       '#markup' => $output,

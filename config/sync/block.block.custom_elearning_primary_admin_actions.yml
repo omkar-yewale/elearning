@@ -1,0 +1,20 @@
+uuid: cca2a053-592c-4ab7-99a5-f019f2d89a7e
+langcode: en
+status: true
+dependencies:
+  theme:
+    - custom_elearning
+_core:
+  default_config_hash: Q9_2whdOj1YIomfvsIfopROW4FT_X5pY0DjdOiOaQ5U
+id: custom_elearning_primary_admin_actions
+theme: custom_elearning
+region: highlighted
+weight: -5
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primary admin actions'
+  label_display: '0'
+  provider: core
+visibility: {  }

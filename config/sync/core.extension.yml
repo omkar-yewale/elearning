@@ -62,4 +62,5 @@ module:
 theme:
   olivero: 0
   claro: 0
+  custom_elearning: 0
 profile: standard

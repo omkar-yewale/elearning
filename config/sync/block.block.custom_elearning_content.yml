@@ -1,0 +1,22 @@
+uuid: 0dfae285-2b0c-4d83-8925-951fa6139ab0
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - custom_elearning
+_core:
+  default_config_hash: erQSEZF2XUjNmgTl0uNRBzmg18ZGXwUcw2FhApoeuHk
+id: custom_elearning_content
+theme: custom_elearning
+region: content
+weight: -7
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  label_display: '0'
+  provider: system
+visibility: {  }

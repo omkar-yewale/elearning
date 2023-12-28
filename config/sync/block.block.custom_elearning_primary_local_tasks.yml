@@ -1,0 +1,22 @@
+uuid: 6dabac73-6126-42a5-8aef-bd1a652ff629
+langcode: en
+status: true
+dependencies:
+  theme:
+    - custom_elearning
+_core:
+  default_config_hash: nGE3EoPQQaQCuqTUtZgw0-KIzmrqdKDzdNQf2JyPUt4
+id: custom_elearning_primary_local_tasks
+theme: custom_elearning
+region: highlighted
+weight: -4
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: 'Primary tabs'
+  label_display: '0'
+  provider: core
+  primary: true
+  secondary: false
+visibility: {  }

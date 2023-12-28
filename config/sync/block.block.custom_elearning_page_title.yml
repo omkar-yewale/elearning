@@ -1,0 +1,20 @@
+uuid: 7b184f24-1fe3-49b5-b332-a7ad97ba68ce
+langcode: en
+status: true
+dependencies:
+  theme:
+    - custom_elearning
+_core:
+  default_config_hash: 6aOgWsNTXjqrDm98TXSAjP6qd2nCijD1xw45MrnbK-Y
+id: custom_elearning_page_title
+theme: custom_elearning
+region: content_above
+weight: -5
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  label_display: '0'
+  provider: core
+visibility: {  }

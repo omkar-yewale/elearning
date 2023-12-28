@@ -1,0 +1,20 @@
+<?php
+
+/**
+ * @file
+ * Functions to support theming in the Custom Elearning theme.
+ */
+
+/**
+ * Implements hook_preprocess_HOOK() for html.html.twig.
+ */
+function custom_elearning_preprocess_html(array &$variables): void {
+
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for page.html.twig.
+ */
+function custom_elearning_preprocess_page(array &$variables): void {
+
+}
