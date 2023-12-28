@@ -3,6 +3,7 @@
 namespace Drupal\custom_elearning\Plugin\views\field;
 
 use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\user\Entity\User;
 use Drupal\views\Plugin\views\display\DisplayPluginBase;
 use Drupal\views\Plugin\views\field\FieldPluginBase;
 use Drupal\views\ResultRow;
@@ -122,8 +123,18 @@ class CourseProgress extends FieldPluginBase {
    * {@inheritdoc}
    */
   public function render(ResultRow $values) {
+    $roles = [];
     $node = $values->_entity;
-    $currentUserId = $this->currentUser->id();
+    if (empty($node)) {
+      $node = $values->_relationship_entities['course'];
+      $currentUserId = $values->custom_enrollment_course_enrollment_table_user_id;
+      $user = User::load($currentUserId);
+      $roles = $user->getRoles();
+    }
+    else {
+      $currentUserId = $this->currentUser->id();
+      $roles = $this->currentUser->getRoles();
+    }
     $courseId = $node->get('nid')->getValue()[0]['value'];
     // Calculate percentage of course complition.
     $percentage = $this->commonService->calculateCoursePercentage($courseId, $currentUserId);
@@ -131,7 +142,7 @@ class CourseProgress extends FieldPluginBase {
     $output = '<div class="progress">' . $percentage . '% Complete' . '</div>';
 
     // Check if $percentage is 100 and add the view certificate button.
-    if ($percentage == 100) {
+    if ($percentage == 100 && in_array('student', $roles)) {
       $output .= '<a href="' . base_path() . '/my-courses/certificate/' . $courseId . '" class="button button--action button--primary" target="_blank"> View Certificate </a>';
     }
     return [

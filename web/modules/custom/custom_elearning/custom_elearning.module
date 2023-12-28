@@ -55,6 +55,71 @@ function custom_elearning_views_data() {
       'id' => 'course_progress',
     ],
   ];
+
+  // Create custom group for custom table.
+  $data['custom_enrollment_course_enrollment_table']['table']['group'] = t('Custom Enrollment');
+  $data['custom_enrollment_course_enrollment_table']['table']['base'] = [
+    'field' => 'id',
+    'title' => t('Custom Enrollment Course Enrollment Table'),
+    'help' => t('Custom table for storing course enrollment data.'),
+  ];
+  // Join table.
+  $data['custom_enrollment_course_enrollment_table']['table']['join'] = [
+    'node' => [
+      'left_field' => 'nid',
+      'field' => 'course_id',
+    ],
+  ];
+  // course id.
+  $data['custom_enrollment_course_enrollment_table']['course'] = [
+    'title' => t('Course'),
+    'help' => t('The course associated with the enrollment.'),
+    'relationship' => [
+      'base' => 'node_field_data',
+      'base field' => 'nid',
+      'relationship field' => 'course_id',
+      'id' => 'standard',
+      'label' => t('Course'),
+      'title' => t('Course'),
+    ],
+  ];
+  // user id field.
+  $data['custom_enrollment_course_enrollment_table']['user_id'] = [
+    'title' => t('User ID'),
+    'help' => t('The user ID associated with the enrollment.'),
+    'field' => [
+      'id' => 'standard',
+      'click sortable' => TRUE,
+    ],
+    'filter' => [
+      'id' => 'numeric',
+    ],
+    'argument' => [
+      'id' => 'numeric',
+    ],
+    'relationship' => [
+      'base' => 'users_field_data',
+      'base field' => 'uid',
+      'id' => 'standard',
+      'label' => t('User'),
+    ],
+  ];
+  // course status field.
+  $data['custom_enrollment_course_enrollment_table']['course_status'] = [
+    'title' => t('Course Status'),
+    'help' => t('The status of the course enrollment (0: Enrolled, 1: On-going, 2: Completed).'),
+    'field' => [
+      'id' => 'numeric',
+      'click sortable' => TRUE,
+    ],
+    'filter' => [
+      'id' => 'numeric',
+    ],
+    'argument' => [
+      'id' => 'numeric',
+    ],
+  ];
+
   return $data;
 }
 
